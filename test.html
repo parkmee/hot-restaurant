@@ -9,12 +9,67 @@
 </head>
 <body>
     <div class="row">
-        <div>Table</div>
+        <div><h3>Table</h3></div>
         <div id="table-view"></div>
     </div>
     <div class="row">
-        <div id="waitlist"></div>
+        <div><h3>Wait List</h3></div>
+        <div id="waitlist-view"></div>
     </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+
+    <script type="application/javascript">
+        $(document).ready(function(){
+            const url= "/api/tables";
+            const method = "GET";
+
+            $.ajax({
+                url: url,
+                method: method
+            }).then(function(response) {
+                for (let i = 0; i < response.length; i++){
+                    const newNameDiv = $("<div>").text(response[i].name);
+                    const newPhoneDiv = $("<div>").text(response[i].phone);
+                    const newEmailDiv = $("<div>").text(response[i].email);
+                    $("#table-view").append(newNameDiv);
+                    $("#table-view").append(newPhoneDiv);
+                    $("#table-view").append(newEmailDiv);
+                    $("#table-view").append($("<br>"));
+                    $("#table-view").append($("<hr>"));
+                    $("#table-view").append($("<br>"));
+                }
+            }, function (error) {
+                console.log("error: ", error);
+            });
+
+            const waitListUrl= "/api/waitlist";
+
+            $.ajax({
+                url: waitListUrl,
+                method: method
+            }).then(function(response) {
+                for (let i = 0; i < response.length; i++){
+                    const newNameDiv = $("<div>").text(response[i].name);
+                    const newPhoneDiv = $("<div>").text(response[i].phone);
+                    const newEmailDiv = $("<div>").text(response[i].email);
+                    $("#waitlist-view").append(newNameDiv);
+                    $("#waitlist-view").append(newPhoneDiv);
+                    $("#waitlist-view").append(newEmailDiv);
+                    $("#waitlist-view").append($("<br>"));
+                    $("#waitlist-view").append($("<hr>"));
+                    $("#waitlist-view").append($("<br>"));
+                }
+            }, function (error) {
+                console.log("error: ", error);
+            });
+        });
+
+
+    </script>
 </body>
 
 </html>

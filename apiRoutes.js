@@ -16,47 +16,48 @@ const Abdul = new Customer ("Abdul Sabree", "555-555-4567", "adbul@email.com", 4
 tableArray.push(Abdul);
 
 function addCustomerToList(theCustomer){
-
+    let onWaitList = false;
     // check to see if list > 5
     // if true, put on waiting list
     // else seat the guest
     if (tableArray.length > 5) {
         waitListArray.push(theCustomer)
+        onWaitList = true
     } else {
         tableArray.push(theCustomer)
     }
+
+    return onWaitList;
 }
 
-function removeCustomerFromList(theCustomer){
-    // remove customer
-    // check to see if any in waiting list
-    // if true, seat the guest
-}
-
-
-
-
-
-// send JSON of all friends
+// get the tables
 router.get("/tables", function (req, res) {
-    const tableInfo = [tableArray, waitListArray];
-    res.send(tableInfo);
+    res.send(tableArray);
 });
 
-// handle incoming results
+// get the wait list
+router.get("/waitlist", function (req, res) {
+    res.send(waitListArray);
+});
+
+// clear the tables
+router.get("/clear", function (req, res) {
+    tableArray = [];
+    waitListArray = [];
+    res.send("Clearing...");
+});
+
+// handle incoming post to add customer
 router.post("/tables", function (req, res) {
 
     // data from requests
     let reqData = req.body;
-    console.log(reqData);
-    //console.log(reqData.name, reqData.phone, reqData.email);
 
     const newCust = new Customer(reqData.name, reqData.phone, reqData.email);
-    addCustomerToList(newCust);
+    const onWaitList = addCustomerToList(newCust);
 
     // send back the client
-    //res.json({ "name" : closestMatch[0], "photo" : closestMatch[1]});
-    res.send("done");
+    res.json({ "onwaitlist" : onWaitList});
 });
 
 // return the router to server.js

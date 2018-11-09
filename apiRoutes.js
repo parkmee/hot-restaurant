@@ -48,13 +48,15 @@ router.post("/tables", function (req, res) {
 
     // data from requests
     let reqData = req.body;
-    let name = reqData.name;
+    console.log(reqData);
+    //console.log(reqData.name, reqData.phone, reqData.email);
 
     const newCust = new Customer(reqData.name, reqData.phone, reqData.email);
-    addCustomerToList.push(newCust);
+    addCustomerToList(newCust);
 
     // send back the client
-    res.json({ "name" : closestMatch[0], "photo" : closestMatch[1]});
+    //res.json({ "name" : closestMatch[0], "photo" : closestMatch[1]});
+    res.send("done");
 });
 
 // return the router to server.js
